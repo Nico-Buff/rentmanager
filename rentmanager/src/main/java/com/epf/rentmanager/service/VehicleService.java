@@ -36,7 +36,7 @@ public class VehicleService {
 		try{
 			return vehicleDao.create(vehicle);
 		} catch (DaoException e) {
-			throw new ServiceException("Une erreur est survenue lors de la création de la voiture", e);
+			throw new ServiceException("Une erreur est survenue lors de la création de la voiture: " + e.getMessage());
 		}
 		
 	}

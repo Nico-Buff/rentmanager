@@ -31,21 +31,23 @@ public class VehicleDao {
 			 PreparedStatement ps = connection.prepareStatement(CREATE_VEHICLE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, vehicle.getConstructeur());
-			ps.setInt(2, vehicle.getNb_places());
+			ps.setString(2, vehicle.getModele());
+			ps.setInt(3, vehicle.getNb_places());
+
+			ps.executeUpdate();
 
 			try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					vehicle.setId(generatedKeys.getInt(1));
 				} else {
-					throw new SQLException("La création du client a échoué, aucun ID généré n'a été récupéré.");
+					throw new SQLException("La création du véhicule a échoué, aucun ID généré n'a été récupéré.");
 				}
 			}
 
-			ps.execute();
 			ps.close();
 			connection.close();
 		} catch (SQLException e) {
-			throw new DaoException("Une erreur est survenue lors de la création du véhicule.", e);
+			throw new DaoException(e.getMessage());
 		}
 		return vehicle.getId();
 	}
