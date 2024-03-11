@@ -40,6 +40,7 @@ public class Main {
             System.out.println("9. Lister les Réservations d'un Client");
             System.out.println("10. Lister les Réservations d'un Véhicule");
             System.out.println("11. Supprimer une Réservation");
+            System.out.println("12. Afficher Nombre Véhicule");
             System.out.println("0. Quitter");
 
             choix = scanner.nextInt();
@@ -77,6 +78,9 @@ public class Main {
                     break;
                 case 11:
                     Test_supprimer_reservation();
+                    break;
+                case 12:
+                    Test_compter_vehicules();
                     break;
                 case 0:
                     System.out.println("Au revoir !");
@@ -274,6 +278,15 @@ public class Main {
         try {
             reservationService.delete(id);
             System.out.println("Réservation supprimée avec succès.");
+        } catch (ServiceException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void Test_compter_vehicules() {
+        try {
+            int count = vehicleService.count();
+            System.out.println("Nombre de véhicules : " + count);
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
         }

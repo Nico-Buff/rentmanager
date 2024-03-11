@@ -45,7 +45,8 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Voitures</span>
-              <span class="info-box-number">2</span>
+              <% Integer vehicleCount = (Integer) request.getAttribute("vehicleCount"); %>
+              <span class="info-box-number"><%= vehicleCount.toString() %></span>
             </div>
             <!-- /.info-box-content -->
           </div>
