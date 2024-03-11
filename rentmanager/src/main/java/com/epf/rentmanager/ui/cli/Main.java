@@ -2,6 +2,7 @@ package com.epf.rentmanager.ui.cli;
 
 import java.time.format.DateTimeParseException;
 import com.epf.rentmanager.Exception.ServiceException;
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
@@ -10,6 +11,9 @@ import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
 import org.h2.jdbcx.JdbcConnectionPool;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,9 +24,10 @@ import java.util.regex.Pattern;
 
 public class Main {
 
-    private static ClientService clientService = ClientService.getInstance();
-    static VehicleService vehicleService = VehicleService.getInstance();
-    private static ReservationService reservationService = ReservationService.getInstance();
+    static ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+    static ClientService clientService = context.getBean(ClientService.class);
+    static VehicleService vehicleService = context.getBean(VehicleService.class);
+    static ReservationService reservationService = context.getBean(ReservationService.class);
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main (String [] args){
