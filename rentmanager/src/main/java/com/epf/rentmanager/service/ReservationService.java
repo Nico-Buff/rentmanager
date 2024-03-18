@@ -56,4 +56,12 @@ public class ReservationService {
             throw new ServiceException("Une erreur est survenue lors de la recherche de toutes les réservations : " + e.getMessage());
         }
     }
+
+    public int count() throws ServiceException {
+        try {
+            return reservationDao.count();
+        } catch (DaoException e) {
+            throw new ServiceException("Une erreur est survenue lors du comptage des réservations: " + e.getMessage());
+        }
+    }
 }

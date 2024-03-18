@@ -1,7 +1,9 @@
 package com.epf.rentmanager.servlet;
 
 import com.epf.rentmanager.Exception.ServiceException;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Vehicle;
+import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -12,15 +14,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
 
-@WebServlet("/cars/create")
-public class VehicleCreateServlet extends HttpServlet {
+@WebServlet("/users/create")
+public class ClientCreateServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Autowired
-    private VehicleService vehicleService;
+    private ClientService clientService;
 
     @Override
     public void init() throws ServletException {
@@ -29,24 +31,26 @@ public class VehicleCreateServlet extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/users/create.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String constructeur = request.getParameter("manufacturer");
-        String modele = request.getParameter("modele");
-        int nbPlaces = Integer.parseInt(request.getParameter("seats"));
+        String nom = request.getParameter("first_name");
+        String prenom = request.getParameter("last_name");
+        String email = request.getParameter("email");
+        String birthdayString = request.getParameter("birthday");
+        LocalDate birthday = LocalDate.parse(birthdayString);
 
-        Vehicle vehicle = new Vehicle();
-        vehicle.setConstructeur(constructeur);
-        vehicle.setModele(modele);
-        vehicle.setNb_places(nbPlaces);
+        Client client = new Client();
+        client.setNom(nom);
+        client.setPrenom(prenom);
+        client.setEmail(email);
+        client.setNaissance(birthday);
 
         try {
-            long id = vehicleService.create(vehicle);
-            response.sendRedirect("/rentmanager/cars");
+            long id = clientService.create(client);
+            response.sendRedirect("/rentmanager/users");
         } catch (ServiceException e) {
-           request.setAttribute("error", e.getMessage());
-
+            request.setAttribute("error", e.getMessage());
         }
     }
 

@@ -1,9 +1,8 @@
 package com.epf.rentmanager.servlet;
 
-
 import com.epf.rentmanager.Exception.ServiceException;
-import com.epf.rentmanager.model.Vehicle;
-import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -13,14 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/cars")
-public class VehicleListServlet extends HttpServlet {
+@WebServlet("/users/delete")
+public class ClientDeleteServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     @Autowired
-    private VehicleService vehicleService;
+    private ClientService clientService;
 
     @Override
     public void init() throws ServletException {
@@ -30,14 +28,13 @@ public class VehicleListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        long clientId = Long.parseLong(request.getParameter("id"));
         try {
-            List<Vehicle> vehicles = vehicleService.findAll();
-            request.setAttribute("vehicles", vehicles);
+            Client client =clientService.findById(clientId);
+            clientService.delete(client);
+            response.sendRedirect(request.getContextPath() + "/users");
         } catch (ServiceException e) {
-            request.setAttribute("errorMessage", "Une erreur est survenue lors de la récupération des voitures : " + e.getMessage());
+            request.setAttribute("errorMessage", "Une erreur est survenue lors de la suppression de l'utilisateur : " + e.getMessage());
         }
-
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/list.jsp").forward(request, response);
     }
-
 }

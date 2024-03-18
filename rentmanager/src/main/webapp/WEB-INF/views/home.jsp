@@ -32,7 +32,8 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Utilisateurs</span>
-              <span class="info-box-number">3</span>
+              <% Integer clientCount = (Integer) request.getAttribute("clientCount"); %>
+              <span class="info-box-number"><%= clientCount.toString() %></span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -63,7 +64,8 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Reservations</span>
-              <span class="info-box-number">2</span>
+              <% Integer reservationCount = (Integer) request.getAttribute("reservationCount"); %>
+              <span class="info-box-number"><%= reservationCount.toString() %></span>
             </div>
             <!-- /.info-box-content -->
           </div>

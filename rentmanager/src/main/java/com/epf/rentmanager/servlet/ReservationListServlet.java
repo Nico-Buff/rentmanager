@@ -1,7 +1,9 @@
 package com.epf.rentmanager.servlet;
 
 import com.epf.rentmanager.Exception.ServiceException;
+import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
+import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -14,40 +16,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/cars/create")
-public class VehicleCreateServlet extends HttpServlet {
+@WebServlet("/rents")
+public class ReservationListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
     @Autowired
-    private VehicleService vehicleService;
+    private ReservationService reservationService;
 
     @Override
     public void init() throws ServletException {
         super.init();
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp").forward(request, response);
-    }
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String constructeur = request.getParameter("manufacturer");
-        String modele = request.getParameter("modele");
-        int nbPlaces = Integer.parseInt(request.getParameter("seats"));
-
-        Vehicle vehicle = new Vehicle();
-        vehicle.setConstructeur(constructeur);
-        vehicle.setModele(modele);
-        vehicle.setNb_places(nbPlaces);
-
         try {
-            long id = vehicleService.create(vehicle);
-            response.sendRedirect("/rentmanager/cars");
+            List<Reservation> reservations = reservationService.findAll();
+            request.setAttribute("reservations", reservations);
         } catch (ServiceException e) {
-           request.setAttribute("error", e.getMessage());
-
+            request.setAttribute("errorMessage", "Une erreur est survenue lors de la récupération des réservations : " + e.getMessage());
         }
+
+        this.getServletContext().getRequestDispatcher("/WEB-INF/views/rents/list.jsp").forward(request, response);
     }
 
 }
