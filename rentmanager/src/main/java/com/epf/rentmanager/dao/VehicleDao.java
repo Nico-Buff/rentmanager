@@ -76,7 +76,7 @@ public class VehicleDao {
 			if(resultSet.next()){
 				vehicle.setId(resultSet.getLong(1));
 				vehicle.setConstructeur(resultSet.getString(2));
-				vehicle.setConstructeur(resultSet.getString(3));
+				vehicle.setModele(resultSet.getString(3));
 				vehicle.setNb_places(resultSet.getInt(4));
 			}
 			ps.close();

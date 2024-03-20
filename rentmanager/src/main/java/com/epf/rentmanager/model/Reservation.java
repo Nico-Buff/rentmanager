@@ -24,8 +24,8 @@
         public String toString() {
             return "Reservation{" +
                     "Id=" + id +
-                    ",Id client=" + client.getId() +
-                    ",Id vehicle=" + vehicle.getId() +
+                    ",Id client=" + client +
+                    ",Id vehicle=" + vehicle +
                     ", debut=" + debut +
                     ", fin=" + fin +
                     '}';

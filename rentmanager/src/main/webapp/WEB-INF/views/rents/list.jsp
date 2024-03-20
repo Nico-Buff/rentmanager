@@ -34,24 +34,24 @@
                                     <th>Fin</th>
                                     <th>Action</th>
                                 </tr>
-                                <c:forEach items="${vehicles}" var="vehicle">
-                                <td>${vehicle.id}.</td>
-                                <td>${vehicle.constructeur}</td>
-                                <td>${vehicle.modele}</td>
-                                <td>${vehicle.nb_places}</td>
-
+                                <c:forEach items="${reservations}" var="reservation">
                                 <tr>
-                                <td>
-                                    <a class="btn btn-primary disabled" href="car-detail.html">
-                                        <i class="fa fa-play"></i>
-                                    </a>
-                                    <a class="btn btn-success disabled" href="#">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a class="btn btn-danger" href="${pageContext.request.contextPath}/rents/delete?id=${reservation.id}">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
+                                    <td>${reservation.id}.</td>
+                                    <td>${reservation.vehicle.constructeur} ${reservation.vehicle.modele}</td>
+                                    <td>${reservation.client.prenom} ${reservation.client.nom}</td>
+                                    <td>${reservation.debut}</td>
+                                    <td>${reservation.fin}</td>
+                                    <td>
+                                        <a class="btn btn-primary disabled" href="car-detail.html">
+                                            <i class="fa fa-play"></i>
+                                        </a>
+                                        <a class="btn btn-success disabled" href="#">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger" href="${pageContext.request.contextPath}/rents/delete?id=${reservation.id}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 </c:forEach>
                             </table>

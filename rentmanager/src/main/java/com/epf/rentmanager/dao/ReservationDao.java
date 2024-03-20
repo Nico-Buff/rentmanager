@@ -73,6 +73,7 @@ public class ReservationDao {
 
 	
 	public List<Reservation> findResaByClientId(long clientId) throws DaoException {
+
 		List listReservation = new ArrayList<Reservation>();
 		try (Connection connection = ConnectionManager.getConnection();
 			 PreparedStatement ps = connection.prepareStatement(FIND_RESERVATIONS_BY_CLIENT_QUERY)) {
@@ -80,9 +81,9 @@ public class ReservationDao {
 			ps.setLong(1, clientId);
 			ResultSet resultSet = ps.executeQuery();
 
-			if(resultSet.next()){
+			while(resultSet.next()){
 				Reservation reservation = new Reservation();
-				reservation.setClient(new Client((clientId), null, null, null, null));
+				reservation.setClient(new Client(clientId, null, null, null, null));
 				reservation.setId(resultSet.getLong(1));
 				reservation.setVehicle(new Vehicle(resultSet.getLong(2), null, null, 0));
 				reservation.setDebut(resultSet.getDate(3).toLocalDate());

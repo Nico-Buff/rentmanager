@@ -4,17 +4,26 @@ import java.util.List;
 
 import com.epf.rentmanager.Exception.DaoException;
 import com.epf.rentmanager.Exception.ServiceException;
+import com.epf.rentmanager.dao.ClientDao;
 import com.epf.rentmanager.dao.ReservationDao;
+import com.epf.rentmanager.dao.VehicleDao;
+import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationService {
 
     private ReservationDao reservationDao;
+    private ClientDao clientDao;
+    private VehicleDao vehicleDao;
 
-    private ReservationService(ReservationDao reservationDao) {
+
+    private ReservationService(ReservationDao reservationDao, ClientDao clientDao,VehicleDao vehicleDao) {
         this.reservationDao = reservationDao;
+        this.clientDao = clientDao;
+        this.vehicleDao = vehicleDao;
     }
 
     public long create(Reservation reservation) throws ServiceException {
@@ -35,7 +44,14 @@ public class ReservationService {
 
     public List<Reservation> findReservationsByClientId(long clientId) throws ServiceException {
         try {
-            return reservationDao.findResaByClientId(clientId);
+            List<Reservation> reservationList = reservationDao.findResaByClientId(clientId);
+            for (Reservation reservation : reservationList){
+                Client client = clientDao.findById(reservation.getClient().getId());
+                Vehicle vehicle = vehicleDao.findById(reservation.getVehicle().getId());
+                reservation.setClient(client);
+                reservation.setVehicle(vehicle);
+            }
+            return reservationList;
         } catch (DaoException e) {
             throw new ServiceException("Une erreur est survenue lors de la recherche des réservations du client : " + e.getMessage());
         }
@@ -43,7 +59,14 @@ public class ReservationService {
 
     public List<Reservation> findReservationsByVehicleId(long vehicleId) throws ServiceException {
         try {
-            return reservationDao.findResaByVehicleId(vehicleId);
+            List<Reservation> reservationList = reservationDao.findResaByVehicleId(vehicleId);
+            for (Reservation reservation : reservationList){
+                Client client = clientDao.findById(reservation.getClient().getId());
+                Vehicle vehicle = vehicleDao.findById(reservation.getVehicle().getId());
+                reservation.setClient(client);
+                reservation.setVehicle(vehicle);
+            }
+            return reservationList;
         } catch (DaoException e) {
             throw new ServiceException("Une erreur est survenue lors de la recherche des réservations du véhicule : " + e.getMessage());
         }
@@ -51,7 +74,14 @@ public class ReservationService {
 
     public List<Reservation> findAll() throws ServiceException {
         try {
-            return reservationDao.findAll();
+            List<Reservation> reservationList = reservationDao.findAll();
+            for (Reservation reservation : reservationList){
+                Client client = clientDao.findById(reservation.getClient().getId());
+                Vehicle vehicle = vehicleDao.findById(reservation.getVehicle().getId());
+                reservation.setClient(client);
+                reservation.setVehicle(vehicle);
+            }
+            return reservationList;
         } catch (DaoException e) {
             throw new ServiceException("Une erreur est survenue lors de la recherche de toutes les réservations : " + e.getMessage());
         }
